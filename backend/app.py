@@ -11,7 +11,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Configuración MySQL
 conexion = mysql.connector.connect(
-    host=os.getenv('DB_HOST'),  # Usamos la variable de entorno para la base de datos
+    host=os.getenv('DB_HOST'),  
     user=os.getenv('DB_USER'),
     password=os.getenv('DB_PASSWORD'),
     database=os.getenv('DB_NAME')
@@ -42,10 +42,6 @@ def verify_scrypt_password(stored_hash, password):
     except Exception as e:
         print(f"❌ Error al verificar contraseña: {e}")
         return False
-
-@app.route('/')
-def home():
-    return jsonify({"mensaje": "Bienvenido a EasyGenApp!"})
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -92,7 +88,6 @@ def generar_codigo():
         return jsonify({'error': 'Descripción requerida'}), 400
 
     try:
-        # Prompt más abierto y flexible
         prompt = f"Eres un generador experto de código. Genera el código correspondiente a la siguiente descripción: {descripcion}"
 
         respuesta = model.generate_content(prompt)
@@ -100,13 +95,6 @@ def generar_codigo():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-# Configuración de puerto dinámico en Heroku
 if __name__ == "__main__":
-    port = os.getenv('PORT', 5000)  # Usar el puerto proporcionado por Heroku
+    port = os.getenv('PORT', 5000)
     app.run(debug=True, host='0.0.0.0', port=port)
-
-
-
-
-
-

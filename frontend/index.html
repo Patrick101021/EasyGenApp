@@ -1,43 +1,42 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EasyGenApp</title>
-    <link rel="stylesheet" href="styles.css" />
-    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <main class="container">
-        <!-- Login -->
-        <section id="loginSection" class="card">
-            <h2>Iniciar Sesión</h2>
-            <input type="email" id="email" placeholder="Correo electrónico" required />
+    <div id="loginSection">
+        <h2>Iniciar sesión</h2>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Correo" required />
             <input type="password" id="password" placeholder="Contraseña" required />
-            <button onclick="iniciarSesion()">Iniciar Sesión</button>
-            <p>¿No tienes cuenta? <a href="#" onclick="mostrarRegistro()">Regístrate aquí</a></p>
-        </section>
-
-        <!-- Registro -->
-        <section id="registerSection" class="card hidden">
-            <h2>Registro</h2>
-            <input type="text" id="nombre" placeholder="Nombre completo" required />
-            <input type="email" id="emailRegistro" placeholder="Correo electrónico" required />
+            <button type="button" onclick="iniciarSesion()">Iniciar sesión</button>
+        </form>
+        <button onclick="mostrarRegistro()">No tienes cuenta? Regístrate aquí</button>
+    </div>
+    
+    <div id="registerSection" class="hidden">
+        <h2>Registro de usuario</h2>
+        <form id="registerForm">
+            <input type="text" id="nombre" placeholder="Nombre" required />
+            <input type="email" id="emailRegistro" placeholder="Correo" required />
             <input type="password" id="passwordRegistro" placeholder="Contraseña" required />
-            <button onclick="registrarUsuario()">Registrarse</button>
-            <p>¿Ya tienes cuenta? <a href="#" onclick="mostrarLogin()">Inicia sesión</a></p>
-        </section>
+            <button type="button" onclick="registrarUsuario()">Registrarse</button>
+        </form>
+        <button onclick="mostrarLogin()">Ya tienes cuenta? Inicia sesión</button>
+    </div>
+    
+    <div id="generadorSection" class="hidden">
+        <h2>Generador de código</h2>
+        <textarea id="descripcion" placeholder="Escribe la descripción del código"></textarea>
+        <button onclick="generarCodigo()">Generar Código</button>
+        <pre id="resultado"></pre>
+        <button onclick="cerrarSesion()">Cerrar sesión</button>
+    </div>
 
-        <!-- Generador de Código -->
-<section id="generadorSection" class="card hidden">
-    <h2>Generador de Código con IA</h2>
-    <textarea id="descripcion" placeholder="Describe tu idea de proyecto..."></textarea>
-    <button onclick="generarCodigo()">Generar Código</button>
-    <pre id="resultado"></pre>
-    <button onclick="cerrarSesion()" class="logout-btn">Cerrar sesión</button>
-</section>
-
-
-    </main>
+    <script src="script.js"></script>
 </body>
 </html>
+
