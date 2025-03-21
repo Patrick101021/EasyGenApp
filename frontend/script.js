@@ -23,6 +23,7 @@ function cerrarSesion() {
     mostrarLogin();
 }
 
+const baseUrl = "https://easygenapp-de607d464285.herokuapp.com";  // Cambié la URL base para producción
 
 async function registrarUsuario() {
     const nombre = document.getElementById("nombre").value.trim();
@@ -35,7 +36,7 @@ async function registrarUsuario() {
     }
 
     try {
-        const response = await fetch("http://127.0.0.1:5000/register", {
+        const response = await fetch(`${baseUrl}/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ nombre, email, password })
@@ -63,7 +64,7 @@ async function iniciarSesion() {
     }
 
     try {
-        const response = await fetch("http://127.0.0.1:5000/login", {
+        const response = await fetch(`${baseUrl}/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -93,7 +94,7 @@ async function generarCodigo() {
     resultado.textContent = "⏳ Generando código, por favor espera...";
 
     try {
-        const response = await fetch("http://127.0.0.1:5000/generar_codigo", {
+        const response = await fetch(`${baseUrl}/generar_codigo`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ descripcion })
@@ -109,3 +110,4 @@ async function generarCodigo() {
         resultado.textContent = "❌ Error de conexión con el servidor.";
     }
 }
+
