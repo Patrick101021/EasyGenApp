@@ -9,6 +9,11 @@ import base64
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
 # Configuración MySQL
 conexion = mysql.connector.connect(
     host=os.getenv('DB_HOST'),  
