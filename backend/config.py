@@ -7,4 +7,5 @@ DB_PASSWORD = os.getenv('DB_PASSWORD', 'pqm2ynyft3owopt6')
 DB_NAME = os.getenv('DB_NAME', 'p1o44euv559ey6de')
 
 # API Key de Google Gemini (o cualquier otra API que uses)
-GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', 'tu_api_key_de_google_gemini')
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', 'AIzaSyCEwBPj7AvUJTVjkcnqS9bq43Om6ZZd4Kg')
+
