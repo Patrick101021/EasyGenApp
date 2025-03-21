@@ -43,6 +43,10 @@ def verify_scrypt_password(stored_hash, password):
         print(f"❌ Error al verificar contraseña: {e}")
         return False
 
+@app.route('/')
+def home():
+    return jsonify({"mensaje": "Bienvenido a EasyGenApp!"})
+
 @app.route('/register', methods=['POST'])
 def register():
     data = request.json
@@ -97,8 +101,10 @@ def generar_codigo():
         return jsonify({'error': str(e)}), 500
 
 # Configuración de puerto dinámico en Heroku
-if __name__ == "__main__" and os.environ.get('FLASK_ENV') != 'production':
+if __name__ == "__main__":
+    port = os.getenv('PORT', 5000)  # Usar el puerto proporcionado por Heroku
     app.run(debug=True, host='0.0.0.0', port=port)
+
 
 
 
