@@ -1,27 +1,33 @@
-
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import mysql.connector
 import google.generativeai as genai
-import config
 import os
 import hashlib
 import base64
+import urllib.parse as up  # Importamos para parsear la URL
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-# Configuración MySQL
+# URL de conexión de la base de datos de JawsDB proporcionada por Heroku
+db_url = os.getenv('DATABASE_URL', 'mysql://njty1yh1vnpnxgsm:pqm2ynyft3owopt6@fnx6frzmhxw45qcb.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/p1o44euv559ey6de')
+
+# Parsear la URL
+url = up.urlparse(db_url)
+
+# Configuración MySQL usando la URL de conexión de JawsDB
 conexion = mysql.connector.connect(
-    host=config.DB_HOST,
-    user=config.DB_USER,
-    password=config.DB_PASSWORD,
-    database=config.DB_NAME
+    host=url.hostname,
+    user=url.username,
+    password=url.password,
+    database=url.path[1:]  # El nombre de la base de datos está después del primer '/'
 )
+
 cursor = conexion.cursor(dictionary=True)
 
 # Configuración Google Gemini AI
-genai.configure(api_key=config.GEMINI_API_KEY)
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 def hash_password(password):
@@ -79,7 +85,7 @@ def login():
     user = cursor.fetchone()
 
     if user and verify_scrypt_password(user['password_hash'], password):
-        return jsonify({'mensaje': 'Login exitoso'})
+        return jsonify({'mensaje': 'Login exitoso'}), 200
     else:
         return jsonify({'error': 'Credenciales incorrectas'}), 401
 
@@ -91,7 +97,6 @@ def generar_codigo():
         return jsonify({'error': 'Descripción requerida'}), 400
 
     try:
-        # Prompt más abierto y flexible
         prompt = f"Eres un generador experto de código. Genera el código correspondiente a la siguiente descripción: {descripcion}"
 
         respuesta = model.generate_content(prompt)
@@ -102,3 +107,4 @@ def generar_codigo():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
