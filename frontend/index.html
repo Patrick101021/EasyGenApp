@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>EasyGenApp</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <main class="container">
+        <!-- Login -->
+        <section id="loginSection" class="card">
+            <h2>Iniciar Sesión</h2>
+            <input type="email" id="email" placeholder="Correo electrónico" required />
+            <input type="password" id="password" placeholder="Contraseña" required />
+            <button onclick="iniciarSesion()">Iniciar Sesión</button>
+            <p>¿No tienes cuenta? <a href="#" onclick="mostrarRegistro()">Regístrate aquí</a></p>
+        </section>
+
+        <!-- Registro -->
+        <section id="registerSection" class="card hidden">
+            <h2>Registro</h2>
+            <input type="text" id="nombre" placeholder="Nombre completo" required />
+            <input type="email" id="emailRegistro" placeholder="Correo electrónico" required />
+            <input type="password" id="passwordRegistro" placeholder="Contraseña" required />
+            <button onclick="registrarUsuario()">Registrarse</button>
+            <p>¿Ya tienes cuenta? <a href="#" onclick="mostrarLogin()">Inicia sesión</a></p>
+        </section>
+
+        <!-- Generador de Código -->
+<section id="generadorSection" class="card hidden">
+    <h2>Generador de Código con IA</h2>
+    <textarea id="descripcion" placeholder="Describe tu idea de proyecto..."></textarea>
+    <button onclick="generarCodigo()">Generar Código</button>
+    <pre id="resultado"></pre>
+    <button onclick="cerrarSesion()" class="logout-btn">Cerrar sesión</button>
+</section>
+
+
+    </main>
+</body>
+</html>
