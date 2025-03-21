@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 import mysql.connector
 import google.generativeai as genai
@@ -6,17 +6,17 @@ import os
 import hashlib
 import base64
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='frontend', static_folder='frontend')  # Actualizamos los directorios de las plantillas y archivos estáticos
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html')  # Asegúrate de que index.html esté en la carpeta frontend
 
 
 # Configuración MySQL
 conexion = mysql.connector.connect(
-    host=os.getenv('DB_HOST'),  
+    host=os.getenv('DB_HOST'),
     user=os.getenv('DB_USER'),
     password=os.getenv('DB_PASSWORD'),
     database=os.getenv('DB_NAME')
