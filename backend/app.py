@@ -5,29 +5,21 @@ import google.generativeai as genai
 import os
 import hashlib
 import base64
-import urllib.parse as up  # Importamos para parsear la URL
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-# URL de conexión de la base de datos de JawsDB proporcionada por Heroku
-db_url = os.getenv('DATABASE_URL', 'mysql://njty1yh1vnpnxgsm:pqm2ynyft3owopt6@fnx6frzmhxw45qcb.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/p1o44euv559ey6de')
-
-# Parsear la URL
-url = up.urlparse(db_url)
-
-# Configuración MySQL usando la URL de conexión de JawsDB
+# Configuración MySQL
 conexion = mysql.connector.connect(
-    host=url.hostname,
-    user=url.username,
-    password=url.password,
-    database=url.path[1:]  # El nombre de la base de datos está después del primer '/'
+    host=os.getenv('DB_HOST'),  # Usamos la variable de entorno para la base de datos
+    user=os.getenv('DB_USER'),
+    password=os.getenv('DB_PASSWORD'),
+    database=os.getenv('DB_NAME')
 )
-
 cursor = conexion.cursor(dictionary=True)
 
 # Configuración Google Gemini AI
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 def hash_password(password):
@@ -50,7 +42,6 @@ def verify_scrypt_password(stored_hash, password):
     except Exception as e:
         print(f"❌ Error al verificar contraseña: {e}")
         return False
-
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -97,6 +88,7 @@ def generar_codigo():
         return jsonify({'error': 'Descripción requerida'}), 400
 
     try:
+        # Prompt más abierto y flexible
         prompt = f"Eres un generador experto de código. Genera el código correspondiente a la siguiente descripción: {descripcion}"
 
         respuesta = model.generate_content(prompt)
@@ -104,8 +96,10 @@ def generar_codigo():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-
+# Configuración de puerto dinámico en Heroku
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = os.getenv('PORT', 5000)  # Usar el puerto proporcionado por Heroku
+    app.run(debug=True, host='0.0.0.0', port=port)
+
 
 
